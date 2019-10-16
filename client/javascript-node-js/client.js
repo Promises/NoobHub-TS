@@ -14,7 +14,7 @@ var Noobhub = function (config) {
   var self = this
 
   this.socket = null
-  this.buffer = new Buffer(1024 * 16)
+  this.buffer = Buffer.alloc(1024 * 16)
   this.buffer.len = 0
   this.messageCallback = null
   this.errorCallback = null
@@ -74,6 +74,7 @@ var Noobhub = function (config) {
       message = JSON.stringify(message)
     }
 
+
     this.socket.write('__JSON__START__' + message + '__JSON__END__', cb)
   }
 
@@ -95,6 +96,7 @@ var Noobhub = function (config) {
       str = str.substr(end + 13)  // cut the message and remove the precedant part of the buffer since it can't be processed
       self.buffer.len = self.buffer.write(str, 0)
       json = JSON.parse(json)
+
       if (typeof (self.messageCallback) === 'function') {
         self.messageCallback(json)
       }
